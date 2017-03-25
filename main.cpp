@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<vector<pair<int,char> > > allStates(2000);
-vector<set<string> > output(2000);
-vector<int> fail(2000,-1);
+vector<vector<pair<int,char> > > allStates(100000);
+vector<set<string> > output(100000);
+vector<int> fail(100000,-1);
 vector<int> myqueue;
+set<string> toPrint;
 int newstate=0;
 
 int findMyqueue(int toBeFound){
@@ -106,10 +107,11 @@ void solve(string s){
 		state=find(state,s[i]);
 		//cout<<"After the while loop"<<endl;
 		if(output[state].begin()!=output[state].end()){
-			cout<<i<<endl;
+			//cout<<i<<endl;
 			set<string>::iterator it=output[state].begin();
 			for(;it!=output[state].end();++it){
-				cout<<*it<<endl;
+				//cout<<*it<<endl;
+				toPrint.insert(*it);
 			}
 		}
 	}
@@ -132,13 +134,16 @@ int main(){
 	*/
 
 	while(myfile >> s){
-		string::iterator it=s.begin();
+		//string::iterator it=s.begin();
 		//cout<<"string s is "<<s<<endl;
-		for(;it!=s.end();++it){
-			if(ispunct(*it)) s.erase(it);
+		string made;
+		for(int i=0;i<(signed)s.length();++i){
+			if(s[i]>=97 && s[i]<=122) made.push_back(s[i]);
+			else if(s[i]>=65 && s[i]<=90) made.push_back(tolower(s[i]));
+			//if(ispunct(*it)) s.erase(it);
 		}
-		//cout<<"string s is "<<s<<endl;
-		procedure(s);
+		//cout<<"string s is "<<made<<endl;
+		procedure(made);
 	}
 	for(int i=97;i<=122;i++){
 		if(find(0,i)==-1){
@@ -153,14 +158,20 @@ int main(){
 
 	fstream searchFile ("search.txt");
 	while(searchFile >> s){
-		string::iterator it=s.begin();
-		//cout<<"string s is "<<s<<endl;
-		for(;it!=s.end();++it){
-			if(ispunct(*it)) s.erase(it);
+		string made;
+		for(int i=0;i<(signed)s.length();++i){
+			if(s[i]>=97 && s[i]<=122) made.push_back(s[i]);
+			else if(s[i]>=65 && s[i]<=90) made.push_back(tolower(s[i]));
+			//if(ispunct(*it)) s.erase(it);
 		}
-		solve(s);
+		//cout<<"string s is "<<made<<endl;
+		solve(made);
 	}
 	searchFile.close();
+	set<string>::iterator printIt=toPrint.begin();
+	for(;printIt!=toPrint.end();++printIt){
+        cout<<*printIt<<endl;
+	}
 	/*cout<<"the size of zeroth state is "<<output[0].size()<<endl;
 	cout<<"Printing all the node value"<<endl;
 
